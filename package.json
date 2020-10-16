@@ -1,0 +1,32 @@
+{
+  "name": "art-gallery-backend",
+  "version": "0.1.0",
+  "description": "Node.js based backend API server for Art Gallery.",
+  "scripts": { 
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.coventry.ac.uk/302CEM-2021OCTJAN/art-gallery-backend.git"
+  },
+  "keywords": [
+    "nodejs",
+    "art",
+    "gallery",
+    "expressjs",
+    "web",
+    "api",
+    "development",
+    "agile",
+    "ecommerce"
+  ],
+  "author": "Pranali Deshmukh \"deshmuk3@coventry.ac.uk\"",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.5"
+  }
+}
