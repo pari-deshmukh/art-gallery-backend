@@ -1,2 +1,3 @@
-# art-gallery-backend
-Node.js based backend API server for Art Gallery.
+# Art Gallery Backend
+
+Koa based Web API backend for Art Gallery.

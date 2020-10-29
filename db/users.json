@@ -1,0 +1,19 @@
+{
+    "users": [
+      {
+        "id": "pranali",
+        "name": "Pranali",
+        "created_at": 1558536830937
+      },
+      {
+        "id": "sharon",
+        "name": "Sharon",
+        "created_at": 1558536843742
+      },
+      {
+        "id": "brian",
+        "name": "Brian",
+        "created_at": 1558536863550
+      }
+    ]
+  }
