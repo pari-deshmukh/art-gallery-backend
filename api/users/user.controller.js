@@ -5,7 +5,7 @@ const generateId = require('../../utils/generateId.util');
 /**
  * Mock database, replace this with your db models import, required to perform query to your database.
  */
-const db = require ('../../db/users.json')
+const db = require('../../db/users.json');
 
 exports.getOne = ctx => {
   const { userId } = ctx.params;
