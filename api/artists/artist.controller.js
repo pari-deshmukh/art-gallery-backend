@@ -8,44 +8,58 @@ const generateId = require('../../utils/generateId.util');
 const db = {
   artists: [
     {
-      'Artist name': 'Terry Wylde ',
-      'Item name': 'Beach Days',
-      Contact: '0762718468',
-      Price: '£50',
-      Status: 'sold',
-      Image: 'Images/beachdays.png',
+      name: 'Terry Wylde ',
+      contact: '0762718468',
+      items: [
+        {
+          name: 'Beach Days',
+          status: 'sold',
+          price: '£50',
+          image: 'Images/beachdays.png',
+        },
+        {
+          name: 'Beach Days',
+          status: 'sold',
+          price: '£50',
+          image: 'Images/beachdays.png',
+        },
+        {
+          name: 'Beach Days',
+          status: 'sold',
+          price: '£50',
+          image: 'Images/beachdays.png',
+        },
+        {
+          name: 'Beach Days',
+          status: 'sold',
+          price: '£50',
+          image: 'Images/beachdays.png',
+        },
+      ],
     },
     {
-      'Artist name': 'Richard Hopkinson ',
-      'Item name': 'Warp Drive',
-      Contact: '0788219377',
-      Price: '£300',
-      Status: 'for sale',
-      Image: 'Images/wrapdrive.png',
+      name: 'Richard Hopkinson ',
+      contact: '0788219377',
+      items: [
+        {
+          name: 'Warp Drive',
+          status: 'for sale',
+          price: '£300',
+          image: 'Images/wrapdrive.png',
+        },
+      ],
     },
     {
-      'Artist name': 'Gill Bustamante ',
-      'Item name': 'Summer Dissolving',
-      Contact: '07532709114',
-      Price: '£1,350',
-      Status: 'sold',
-      Image: 'Images/summerdissolving.png',
-    },
-    {
-      'Artist name': 'Linda Drury',
-      'Item name': 'The Hedgerow',
-      Contact: '07637281632',
-      Price: '£90',
-      Status: 'forsale',
-      Image: 'Images/thehedgerow.png',
-    },
-    {
-      'Artist name': 'Claire White ',
-      'Item name': 'Falling Cloudberries',
-      Contact: '0766382976',
-      Price: '£75',
-      Status: 'for sale',
-      Image: 'Images/fallingcloudberries.png',
+      name: 'Gill Bustamante ',
+      contact: '07532709114',
+      item: [
+        {
+          name: 'Summer Dissolving',
+          status: 'sold',
+          price: '£1,350',
+          image: 'Images/summerdissolving.png',
+        },
+      ],
     },
   ],
 };

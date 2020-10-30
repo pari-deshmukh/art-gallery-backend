@@ -4,10 +4,14 @@ const compress = require('koa-compress')();
 const cors = require('@koa/cors')(/* Add your cors option */);
 const helmet = require('koa-helmet')(/* Add your security option */);
 const logger = require('koa-logger')();
+const mongoose = require('mongoose');
 
 const errorHandler = require('./middleware/error.middleware');
 const applyApiMiddleware = require('./api');
-const { isDevelopment } = require('./config');
+const { isDevelopment, database } = require('./config');
+
+/** Connect to mongodb */
+mongoose.connect(`mongodb://localhost/${database}`);
 
 const server = new Koa();
 
