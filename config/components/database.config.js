@@ -30,10 +30,10 @@ if (error) {
 const config = {
   databaseConfig: {
     user: envVars.DB_USER,
-    host: envVars.DB_HOST,
+    host: envVars.DB_HOST ? envVars.DB_HOST : 'localhost',
     password: envVars.DB_PASSWORD,
-    database: envVars.DB_DATABASE,
-    port: envVars.DB_PORT,
+    database: envVars.DB_DATABASE ? envVars.DB_DATABASE : 'art-gallery',
+    port: envVars.DB_PORT ? envVars.DB_PORT : '27017',
   },
 };
 
