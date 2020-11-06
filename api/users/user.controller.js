@@ -1,36 +1,92 @@
 'use strict';
+const User = require('../../db/models/users');
 
-const generateId = require('../../utils/generateId.util');
+const catchErr = (ctx, err) => {
+  ctx.status = 500;
+  ctx.body = {
+    status: 'error',
+    message: err.message || 'Sorry, an error has occurred.',
+  };
+};
 
-/**
- * Mock database, replace this with your db models import, required to perform query to your database.
- */
-const db = require('../../db/users.json');
-
-exports.getOne = ctx => {
-  const { userId } = ctx.params;
-  const user = db.users.find(user => user.id === userId);
-  ctx.assert(user, 404, "The requested user doesn't exist");
-  ctx.status = 200;
-  ctx.body = user;
+exports.getOne = async ctx => {
+  try {
+    const { id } = ctx.params;
+    const user = await User.findById(id);
+    ctx.assert(user, 404, "The requested user doesn't exist");
+    ctx.status = 200;
+    ctx.body = {
+      status: 'success',
+      data: user,
+    };
+  } catch (err) {
+    catchErr(ctx, err);
+  }
 };
 
 exports.getAll = async ctx => {
-  ctx.status = 200;
-  ctx.body = db.users;
+  try {
+    const users = await User.find();
+    ctx.status = 200;
+    ctx.body = {
+      status: 'success',
+      data: users,
+    };
+  } catch (err) {
+    catchErr(ctx, err);
+  }
 };
 
 exports.createOne = async ctx => {
-  const { name } = ctx.request.body;
-  ctx.assert(name, 400, 'The user info is malformed!');
-  const id = generateId();
-  const newUser = {
-    id,
-    name,
-    timestamp: Date.now(),
-  };
-  db.users.push(newUser);
-  const createdUser = db.users.find(user => user.id === id);
-  ctx.status = 201;
-  ctx.body = createdUser;
+  try {
+    const { name } = ctx.request.body;
+    ctx.assert(name, 400, 'The user info is malformed!');
+
+    let user = new User(ctx.request.body);
+    user.created_at = Date.now();
+
+    const createdUser = await user.save();
+    ctx.status = 201;
+    ctx.body = {
+      status: 'success',
+      data: createdUser,
+    };
+  } catch (err) {
+    catchErr(ctx, err);
+  }
+};
+
+exports.modifyOne = async ctx => {
+  try {
+    const { id } = ctx.params;
+    const { name } = ctx.request.body;
+    ctx.assert(name, 400, 'The user info is malformed!');
+
+    let user = await User.findById(id);
+    user.name = name;
+    const updatedUser = await user.save();
+    ctx.assert(updatedUser, 404, 'The user does not exist!');
+
+    ctx.status = 201;
+    ctx.body = {
+      status: 'success',
+      data: updatedUser,
+    };
+  } catch (err) {
+    catchErr(ctx, err);
+  }
+};
+
+exports.deleteOne = async ctx => {
+  try {
+    const { id } = ctx.params;
+    await User.remove({ _id: id });
+    ctx.status = 200;
+    ctx.body = {
+      status: 'success',
+      message: 'User has been removed!',
+    };
+  } catch (err) {
+    catchErr(ctx, err);
+  }
 };

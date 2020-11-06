@@ -2,6 +2,8 @@
  * Create a new connection to mongodb
  */
 const mongoose = require('mongoose');
+const path = require('path');
+const glob = require('glob');
 
 // Import db configuration.
 const { databaseConfig } = require('../config');
@@ -56,6 +58,13 @@ process.on('SIGINT', function() {
     );
     process.exit(0);
   });
+});
+
+/**
+ * Import all data models
+ */
+glob.sync('./models/*.js').forEach(function(file) {
+  require(path.resolve(file));
 });
 
 module.exports = connection;
