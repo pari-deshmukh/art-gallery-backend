@@ -8,9 +8,11 @@ module.exports = Router => {
   });
 
   router
-    .get('/:userId', controller.getOne)
+    .get('/:id', controller.getOne)
     .get('/', controller.getAll)
-    .post('/', controller.createOne);
+    .post('/', controller.createOne)
+    .put('/:id', controller.modifyOne)
+    .delete('/:id', controller.deleteOne);
 
   return router;
 };

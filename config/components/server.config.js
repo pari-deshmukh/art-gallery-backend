@@ -25,7 +25,8 @@ if (error) {
 const config = {
   env: envVars.NODE_ENV,
   isTest: envVars.NODE_ENV === 'test',
-  isDevelopment: envVars.NODE_ENV === 'development',
+  isProduction: envVars.NODE_ENV === 'production',
+  isDevelopment: envVars.NODE_ENV === 'development' || !envVars.NODE_ENV,
   server: {
     port: envVars.PORT || 3000,
     apiVersion: envVars.API_VERSION || 'v1',

@@ -9,6 +9,11 @@ const helmet = require('koa-helmet')(/* Add your security option */);
 const logger = require('koa-logger')();
 
 /**
+ * Import db connection.
+ */
+require('./db');
+
+/**
  * Import and apply the error and API middlewares
  */
 const errorHandler = require('./middleware/error.middleware');
@@ -19,24 +24,20 @@ const applyApiMiddleware = require('./api');
  */
 const { isDevelopment } = require('./config');
 
-/**
- * Import db connection.
- */
-require('./db');
-
-const server = new Koa();
+const app = new Koa();
 
 /**
  * Add here only development middlewares
  */
 if (isDevelopment) {
-  server.use(logger);
+  console.log('Running in Development Mode!');
+  app.use(logger);
 }
 
 /**
- * Pass to our server instance middlewares
+ * Pass to our app instance middlewares
  */
-server
+app
   .use(errorHandler)
   .use(helmet)
   .use(compress)
@@ -44,8 +45,8 @@ server
   .use(bodyParser);
 
 /**
- * Apply to our server the api router
+ * Apply to our app the api router
  */
-applyApiMiddleware(server);
+applyApiMiddleware(app);
 
-module.exports = server;
+module.exports = app;
