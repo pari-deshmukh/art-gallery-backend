@@ -11,6 +11,7 @@ const artistSchema = mongoose.Schema({
   name: String,
   contact: String,
   items: [item],
+  created_At: Date,
 });
 
 const Artist = mongoose.model('Artist', artistSchema);

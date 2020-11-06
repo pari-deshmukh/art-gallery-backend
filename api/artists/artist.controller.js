@@ -1,93 +1,94 @@
 'use strict';
+const Artist = require('../../db/models/artist');
 
-const generateId = require('../../utils/generateId.util');
-
-/**
- * Mock database, replace this with your db models import, required to perform query to your database.
- */
-const db = {
-  artists: [
-    {
-      name: 'Terry Wylde ',
-      contact: '0762718468',
-      items: [
-        {
-          name: 'Beach Days',
-          status: 'sold',
-          price: '£50',
-          image: 'Images/beachdays.png',
-        },
-        {
-          name: 'Beach Days',
-          status: 'sold',
-          price: '£50',
-          image: 'Images/beachdays.png',
-        },
-        {
-          name: 'Beach Days',
-          status: 'sold',
-          price: '£50',
-          image: 'Images/beachdays.png',
-        },
-        {
-          name: 'Beach Days',
-          status: 'sold',
-          price: '£50',
-          image: 'Images/beachdays.png',
-        },
-      ],
-    },
-    {
-      name: 'Richard Hopkinson ',
-      contact: '0788219377',
-      items: [
-        {
-          name: 'Warp Drive',
-          status: 'for sale',
-          price: '£300',
-          image: 'Images/wrapdrive.png',
-        },
-      ],
-    },
-    {
-      name: 'Gill Bustamante ',
-      contact: '07532709114',
-      item: [
-        {
-          name: 'Summer Dissolving',
-          status: 'sold',
-          price: '£1,350',
-          image: 'Images/summerdissolving.png',
-        },
-      ],
-    },
-  ],
+const catchErr = (ctx, err) => {
+  ctx.status = 500;
+  ctx.body = {
+    status: 'error',
+    message: err.message || 'Sorry, an error has occurred.',
+  };
 };
 
-exports.getOne = ctx => {
-  const { artistId } = ctx.params;
-  const artist = db.artists.find(artist => artist.id === artistId);
-  ctx.assert(artist, 404, "The requested artist doesn't exist");
-  ctx.status = 200;
-  ctx.body = artist;
+exports.getOne = async ctx => {
+  try {
+    const { id } = ctx.params;
+    const artist = await Artist.findById(id);
+    ctx.assert(artist, 404, "The requested artist doesn't exist");
+    ctx.status = 200;
+    ctx.body = {
+      status: 'success',
+      data: artist,
+    };
+  } catch (err) {
+    catchErr(ctx, err);
+  }
 };
 
 exports.getAll = async ctx => {
-  ctx.status = 200;
-  ctx.body = db.artists;
+  try {
+    const artists = await Artist.find();
+    ctx.status = 200;
+    ctx.body = {
+      status: 'success',
+      data: artists,
+    };
+  } catch (err) {
+    catchErr(ctx, err);
+  }
 };
 
 exports.createOne = async ctx => {
-  const { name } = ctx.request.body;
-  ctx.assert(name, 400, 'The artist info is malformed!');
-  const id = generateId();
-  const newArtist = {
-    id,
-    name,
-    timestamp: Date.now(),
-  };
-  db.artists.push(newArtist);
-  const createdArtist = db.artists.find(artist => artist.id === id);
-  ctx.status = 201;
-  ctx.body = createdArtist;
+  try {
+    const { name, contact, items } = ctx.request.body;
+    ctx.assert(name && contact && items, 400, 'The artist info is malformed!');
+
+    let artist = new Artist(ctx.request.body);
+    artist.created_at = Date.now();
+
+    const createdArtist = await artist.save();
+    ctx.status = 201;
+    ctx.body = {
+      status: 'success',
+      data: createdArtist,
+    };
+  } catch (err) {
+    catchErr(ctx, err);
+  }
+};
+
+exports.modifyOne = async ctx => {
+  try {
+    const { id } = ctx.params;
+    const { name, contact, items } = ctx.request.body;
+    ctx.assert(name && contact && items, 400, 'The artist info is malformed!');
+
+    let artist = await Artist.findById(id);
+    artist.name = name;
+    artist.contact = contact;
+    artist.items = items;
+    const updatedArtist = await artist.save();
+    ctx.assert(updatedArtist, 404, 'The artist does not exist!');
+
+    ctx.status = 201;
+    ctx.body = {
+      status: 'success',
+      data: updatedArtist,
+    };
+  } catch (err) {
+    catchErr(ctx, err);
+  }
+};
+
+exports.deleteOne = async ctx => {
+  try {
+    const { id } = ctx.params;
+    await Artist.remove({ _id: id });
+    ctx.status = 200;
+    ctx.body = {
+      status: 'success',
+      message: 'Artist has been removed!',
+    };
+  } catch (err) {
+    catchErr(ctx, err);
+  }
 };
